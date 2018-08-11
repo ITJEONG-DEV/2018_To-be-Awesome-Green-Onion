@@ -10,7 +10,7 @@ settings =
 		-- Supported values for orientation:
 		-- portrait, portraitUpsideDown, landscapeLeft, landscapeRight
 		default = "landscapeRight",
-		supported = { "landscapeRight", },
+		supported = { "landscapeRight", "landscapeLeft" },
 	},
 
 	--
@@ -20,20 +20,6 @@ settings =
 	{
 		usesPermissions =
 		{
-			"android.permission.INTERNET",
-		},
-	},
-
-	--
-	-- iOS section
-	--
-	iphone =
-	{
-		xcassets = "Images.xcassets",
-		plist =
-		{
-			UIStatusBarHidden = false,
-			UILaunchStoryboardName = "LaunchScreen",
 		},
 	},
 
