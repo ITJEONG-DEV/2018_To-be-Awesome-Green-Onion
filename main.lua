@@ -1,3 +1,3 @@
 local composer = require "composer"
 
-composer.gotoScene( "mainScene" )
+composer.gotoScene( "scene3" )
