@@ -1,13 +1,18 @@
 local composer = require "composer"
-
+local font = require "_FONT.font"
 local scene = composer.newScene()
+
+local _W = display.contentWidth
 
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
+
 function initUI()
+    local tt = display.newText( "text", display.contentWidth*0.5, display.contentHeight*0.5 , font.bold, 30 )
+    tt.alpha = 0.4
 end
 
 
