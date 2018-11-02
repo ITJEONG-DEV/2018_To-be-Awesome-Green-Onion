@@ -1,5 +1,6 @@
 local composer = require "composer"
 local pop_up = require "_POP_UP_.pop_up"
+local widget = require "widget"
 local font = require "_FONT_.font"
 
 local scene = composer.newScene()
@@ -36,18 +37,46 @@ function pop_up_set()
     {
         contextType = "text",
         x = 1 * _MAX_WIDTH_*0.1,
-        y =  _MAX_HEIGHT_ * 0.05,
+        y =  _MAX_HEIGHT_ * 0,
         text = "my new context",
         textSize = 35,
-        textColor = "ff0066",
+        textColor = "66ff00",
         font = font.regular,
     })
-
-    pop_up.open()
+    pop_up.addContext(
+    {
+        contextType = "button",
+        x = _MAX_WIDTH_ * 0.1,
+        y = _MAX_HEIGHT_ * 0.15,
+        width = 200,
+        height = 150,
+        defaultFile = "/_POP_UP_/sample1.jpg",
+        overFile = "/_POP_UP_/sample2.jpg",
+        onEvent = function(e)
+            if e.phase == "began" then
+                print "MAMAMOO!!!"
+            end
+        end
+    })
 end
 
 function initUI()
+
     pop_up_set()
+
+    sample_button = widget.newButton({
+        x = _MAX_WIDTH_ * 0.5,
+        y = _MAX_HEIGHT_ * 0.5,
+        width = 200,
+        height = 200,
+        defaultFile = "Icon.png",
+        overFile = "Icon.png",
+        onEvent = function(e)
+            if e.phase == "ended" then
+                pop_up.open()
+            end
+        end
+    })
 end
 
 
@@ -73,10 +102,10 @@ function scene:show( event )
     if ( phase == "will" ) then
         -- Code here runs when the sce  ne is still off screen (but is about to come on screen)
 
-        initUI()
 
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
+        initUI()
 
     end
 end

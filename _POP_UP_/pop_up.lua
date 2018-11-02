@@ -240,21 +240,21 @@ function pop_up.addContext(context)
         elseif context.contextType == "image" then
 
             if context.width then
-                this.title.width = context.width
+                this.context[index].width = context.width
             else
                 print "Nil Value : context.width"
                 return
             end
 
             if context.height then
-                this.title.height = context.height
+                this.context[index].height = context.height
             else
                 print "Nil Value : context.height"
                 return
             end
 
             if context.imageLink then
-                this.title.imageLink = context.imageLink
+                this.context[index].imageLink = context.imageLink
             else
                 print "Nil Value : context.imageLink"
                 return
@@ -263,16 +263,37 @@ function pop_up.addContext(context)
         elseif context.contextType == "button" then
 
             if context.width then
-                this.title.width = context.width
+                this.context[index].width = context.width
             else
                 print "Nil Value : context.width"
                 return
             end
 
             if context.height then
-                this.title.height = context.height
+                this.context[index].height = context.height
             else
                 print "Nil Value : context.height"
+                return
+            end
+
+            if context.defaultFile then
+                this.context[index].defaultFile = context.defaultFile
+            else
+                print "Nil Value : context.defaultFile"
+                return
+            end
+
+            if context.overFile then
+                this.context[index].overFile = context.overFile
+            else
+                print "Nil Value : context.overFile"
+                return
+            end
+
+            if context.onEvent then
+                this.context[index].onEvent = context.onEvent
+            else
+                print "Nil Value : context.onEvent"
                 return
             end
         end
@@ -324,7 +345,42 @@ function displayContext()
             pop_up.context[i+2] = display.newImage( this.context[i].imageLink, pop_up.context[1].x + this.context[i].x, pop_up.context[1].y + this.context[i].y )
 
         elseif this.context[i].contextType == "button" then
+            pop_up.context[i+2] = widget.newButton({
+                x = this.context[i].x + pop_up.context[1].x,
+                y = this.context[i].y + pop_up.context[1].y,
+                width = this.context[i].width,
+                height = this.context[i].height,
+                defaultFile = this.context[i].defaultFile,
+                overFile = this.context[i].overFile,
+                onEvent = this.context[i].onEvent
+            })
+
         end
+    end
+end
+function displayCloseButton()
+    function onClickCloseButton(event)
+        if event.phase == "ended" then
+            pop_up.close()
+        end
+    end
+
+    if this.enabled then
+        local i = #pop_up.context + 1
+        local closeButton_width = ( pop_up.context[1].contentWidth > pop_up.context[1].contentHeight and pop_up.context[1].contentHeight or pop_up.context[1].contentWidth ) * 0.1
+
+        local button_info =
+        {
+            x = pop_up.context[1].x + pop_up.context[1].contentWidth * 0.5 - closeButton_width,
+            y = pop_up.context[1].y - pop_up.context[1].contentHeight * 0.5 + closeButton_width,
+            width = closeButton_width,
+            height = closeButton_width,
+            defaultFile = "Icon.png",
+            overFile = "Icon.png",
+            onEvent = onClickCloseButton
+        }
+
+        pop_up.context[i] = widget.newButton(button_info)
     end
 end
 
@@ -332,9 +388,14 @@ function pop_up.open()
     displayBox()
     displayTitle()
     displayContext()
+    displayCloseButton()
 end
 
 function pop_up.close()
+    print "press close button"
+    for i = 1, #pop_up.context, 1 do
+        pop_up.context[i]:removeSelf()
+    end
 end
 
 return pop_up
