@@ -5,6 +5,8 @@ local font = require "_FONT_.font"
 
 local scene = composer.newScene()
 
+local _W = display.contentWidth
+
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
@@ -77,6 +79,8 @@ function initUI()
             end
         end
     })
+
+
 end
 
 
