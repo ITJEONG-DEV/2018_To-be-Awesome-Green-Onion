@@ -2,6 +2,7 @@ local composer = require "composer"
 local pop_up = require "_POP_UP_.pop_up"
 local widget = require "widget"
 local font = require "_FONT_.font"
+local character = require "_CHARACTER_.character_sprite"
 
 local scene = composer.newScene()
 
@@ -109,7 +110,7 @@ function scene:show( event )
 
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
-        initUI()
+        -- initUI()
 
     end
 end
