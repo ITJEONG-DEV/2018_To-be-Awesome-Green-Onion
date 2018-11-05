@@ -12,31 +12,42 @@ local _W = display.contentWidth
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
+
 function pop_up_set()
-    pop_up.setShapeType("rect")
+    pop_up.setShapeType("image")
     pop_up.setShapeSize(_MAX_WIDTH_*0.5, _MAX_HEIGHT_*0.5)
     pop_up.setShapePosition(_MAX_WIDTH_*0.5, _MAX_HEIGHT_*0.5)
-    pop_up.setShapeColor("FF6600")
+    pop_up.setImageLink("/_INVENTORY_/INVENTORY_BG.png")
     pop_up.setShapeAlpha(1)
-
     pop_up.setTitle(
     {
-        titleText = "my pop-up title",
+        titleText = "",
         font = font.bold,
         textSize = 50,
         textColor = "FFFFFF"
     })
-    
-    pop_up.addContext(
-    {
-        contextType = "roundedRect",
-        x = -1 * _MAX_WIDTH_ * 0.1,
-        y = _MAX_HEIGHT_ * 0.05,
-        width = 200,
-        height = 250,
-        radius = 20,
-        color = "eeeeee"
-    })
+    local defaultX = -220
+    local defaultY = -250
+    for i=1, 4, 1 do 
+        for j = 1, 3, 1 do   
+            pop_up.addContext(
+            {
+                contextType = "button",
+                x = defaultX + 110*j,
+                y = defaultY + 110*i,
+                width = 70,
+                height = 70,
+               defaultFile = "/_INVENTORY_/테스트용버튼.png",
+                overFile = "/_INVENTORY_/테스트용버튼눌렸음.png",
+                onEvent = function(e)
+                if e.phase == "began" then
+                    print "눌렸다"
+                end
+            end
+            })
+        end
+    end
+    --[[
     pop_up.addContext(
     {
         contextType = "text",
@@ -47,21 +58,7 @@ function pop_up_set()
         textColor = "66ff00",
         font = font.regular,
     })
-    pop_up.addContext(
-    {
-        contextType = "button",
-        x = _MAX_WIDTH_ * 0.1,
-        y = _MAX_HEIGHT_ * 0.15,
-        width = 200,
-        height = 150,
-        defaultFile = "/_POP_UP_/sample1.jpg",
-        overFile = "/_POP_UP_/sample2.jpg",
-        onEvent = function(e)
-            if e.phase == "began" then
-                print "MAMAMOO!!!"
-            end
-        end
-    })
+    ]]
 end
 
 function initUI()
