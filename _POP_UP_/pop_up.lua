@@ -30,6 +30,7 @@ pop_up.context = {}
 local displayBox, displayTitle, displayContext
 
 function pop_up.setShapeType(shapeType)
+    print(shapeType)
     if shapeType == "rect" then
         this.shapeType = "rect"
     elseif shapeType == "roundedRect" then
@@ -304,6 +305,7 @@ function pop_up.addContext(context)
 end
 
 function displayBox()
+    print ("haha "..this.shapeType)
     if this.shapeType == "rect" then
         pop_up.context[1]    = display.newRect( this.x, this.y, this.width, this.height )
         pop_up.context[1]:setFillColor( _CONVERT_COLOR_(this.color) )
