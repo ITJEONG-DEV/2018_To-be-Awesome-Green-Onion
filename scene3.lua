@@ -1,9 +1,9 @@
 local composer = require "composer"
-local pop_up = require "_POP_UP_.pop_up"
 local widget = require "widget"
+local physcis = require "physics"
+local pop_up = require "_POP_UP_.pop_up"
 local font = require "_FONT_.font"
-local character = require "_CHARACTER_.character_sprite"
-local charMovement = require "_CHARACTER_.keyboardModule"
+local character_sprite = require "_CHARACTER_.character_sprite"
 
 local scene = composer.newScene()
 
@@ -86,11 +86,6 @@ function initUI()
     })
 end
 
-function printXY()
-    x, y = charMovement.getXY()
-    print("x : ".. x .. " y : " .. y )
-end
-
 
 
 -- -----------------------------------------------------------------------------------
@@ -114,14 +109,13 @@ function scene:show( event )
 
     if ( phase == "will" ) then
         -- Code here runs when the sce  ne is still off screen (but is about to come on screen)
-
+        physics.start()
+        physics.setDrawMode( "hybrid" )
 
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
         -- initUI()
-        charMovement.startEvent()
-        Runtime:addEventListener("enterFrame", printXY)
-
+        character_sprite.makeSprite()
     end
 end
 
