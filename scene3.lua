@@ -110,7 +110,7 @@ function scene:show( event )
     if ( phase == "will" ) then
         -- Code here runs when the sce  ne is still off screen (but is about to come on screen)
         physics.start()
-        physics.setDrawMode( "hybrid" )
+        -- physics.setDrawMode( "hybrid" )
 
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen

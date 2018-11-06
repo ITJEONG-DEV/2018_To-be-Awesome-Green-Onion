@@ -5,6 +5,8 @@ local character_sprite = {}
 
 local character, wall
 
+local pre_key
+
 local sheetOptions_character =
 {
     sheetContentWidth = 432,
@@ -36,6 +38,29 @@ local sequences_character =
     }
 }
 
+function character_sprite.setSequenceName(name)
+
+    if pre_key or pre_key == name then
+    else
+        if name == "front" then
+            character:setSequence("front")
+        elseif name == "back" then
+            character:setSequence("back")
+        elseif name == "left" then
+            character:setSequence("beside")
+        elseif name == "right" then
+            character:setSequence("beside")
+        end
+
+    end
+
+    if (pre_key == "left" and name == "right") or (pre_key == "right" and name == "left") then
+        character:scale(-1, 1)
+    end
+
+    character:play()
+end
+
 local function makeWall()
     wall = {}
 
@@ -65,7 +90,23 @@ local force_factor = 20
 local function moveCharacter()
     local xForce, yForce = keyboardModule.getXY()
     character:setLinearVelocity( xForce * force_factor, yForce * force_factor )
-    print( keyboardModule.getXY() )
+
+    if xForce == 0 then
+        if yForce < 0 then
+            character_sprite.setSequenceName("front")
+            pre_key = "front"
+        elseif yForce > 0 then
+            character_sprite.setSequenceName("back")
+            pre_key = "back"
+        end
+    elseif xForce > 0 then
+        character_sprite.setSequenceName("right")
+        pre_key = "right"
+    elseif xForce < 0 then
+        character_sprite.setSequenceName("left")
+        pre_key = "left"
+    end
+    -- print( keyboardModule.getXY() )
 end
 
 function character_sprite.makeSprite(stage_number)
@@ -80,7 +121,6 @@ function character_sprite.makeSprite(stage_number)
 
     keyboardModule.startEvent()
     Runtime:addEventListener( "enterFrame", moveCharacter )
-
 end
 
 function character_sprite.startSprite()
