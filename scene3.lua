@@ -115,7 +115,7 @@ function scene:show( event )
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
         -- initUI()
-        character_sprite.makeSprite()
+        character_sprite.makeSprite(2)
     end
 end
 

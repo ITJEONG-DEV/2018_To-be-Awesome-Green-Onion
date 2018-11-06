@@ -3,7 +3,7 @@ local keyboardModule = require "_CHARACTER_.keyboardModule"
 
 local character_sprite = {}
 
-local character
+local character, wall
 
 local sheetOptions_character =
 {
@@ -36,9 +36,28 @@ local sequences_character =
     }
 }
 
+local function makeWall()
+    wall = {}
+
+    -- top
+    wall[#wall+1] = display.newRect( _MAX_WIDTH_ * 0.5, -10, _MAX_WIDTH_, 10 )
+    physics.addBody( wall[#wall], "static", { bounce = 0 } )
+
+    -- left
+    wall[#wall+1] = display.newRect( 210, _MAX_HEIGHT_ * 0.5, 420, _MAX_HEIGHT_ )
+    physics.addBody( wall[#wall], "static", { bounce = 0 } )
+
+    -- bottom
+    wall[#wall+1] = display.newRect( _MAX_WIDTH_ * 0.5, _MAX_HEIGHT_ + 10, _MAX_WIDTH_, 10 )
+    physics.addBody( wall[#wall], "static", { bounce = 0 } )
+    wall[#wall+1] = display.newRect( 1920 - 210, _MAX_HEIGHT_ * 0.5, 420, _MAX_HEIGHT_ )
+    physics.addBody( wall[#wall], "static", { bounce = 0 } )
+end
+
 local function setPhysics()
     physics.start()
     physics.setGravity( 0, 0 )
+
 end
 
 local force_factor = 20
@@ -49,8 +68,11 @@ local function moveCharacter()
     print( keyboardModule.getXY() )
 end
 
-function character_sprite.makeSprite()
+function character_sprite.makeSprite(stage_number)
     setPhysics()
+    if stage_number == 2 then
+        makeWall()
+    end
     character = display.newSprite( sheet_character, sequences_character )
     physics.addBody( character, "dynamic", { density = 2.0, friction = 0, bounce = 0 } )
     character.x, character.y = _MAX_WIDTH_ * 0.5, _MAX_HEIGHT_ * 0.5
@@ -58,6 +80,7 @@ function character_sprite.makeSprite()
 
     keyboardModule.startEvent()
     Runtime:addEventListener( "enterFrame", moveCharacter )
+
 end
 
 function character_sprite.startSprite()
