@@ -3,6 +3,7 @@ local pop_up = require "_POP_UP_.pop_up"
 local widget = require "widget"
 local font = require "_FONT_.font"
 local character = require "_CHARACTER_.character_sprite"
+local charMovement = require "_CHARACTER_.keyboardModule"
 
 local scene = composer.newScene()
 
@@ -12,6 +13,7 @@ local _W = display.contentWidth
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
+local x, y = 0, 0
 
 function pop_up_set()
     pop_up.setShapeType("rect")
@@ -27,7 +29,7 @@ function pop_up_set()
         textSize = 50,
         textColor = "FFFFFF"
     })
-    
+
     pop_up.addContext(
     {
         contextType = "roundedRect",
@@ -82,9 +84,13 @@ function initUI()
             end
         end
     })
-
-
 end
+
+function printXY()
+    x, y = charMovement.getXY()
+    print("x : ".. x .. " y : " .. y )
+end
+
 
 
 -- -----------------------------------------------------------------------------------
@@ -113,6 +119,8 @@ function scene:show( event )
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
         -- initUI()
+        charMovement.startEvent()
+        Runtime:addEventListener("enterFrame", printXY)
 
     end
 end
