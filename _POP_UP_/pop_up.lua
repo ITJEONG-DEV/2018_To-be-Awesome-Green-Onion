@@ -2,6 +2,7 @@ local pop_up = {}
 local font = require "_FONT_.font"
 local widget = require "widget"
 
+local isOpen = false
 local this =
 {
     shapeType = "rect",
@@ -385,12 +386,15 @@ function displayCloseButton()
         pop_up.context[i] = widget.newButton(button_info)
     end
 end
-
+function pop_up.IsOpen()
+  return isOpen
+end
 function pop_up.open()
     displayBox()
     displayTitle()
     displayContext()
     displayCloseButton()
+    isOpen = true
 end
 
 function pop_up.close()
@@ -398,6 +402,7 @@ function pop_up.close()
     for i = 1, #pop_up.context, 1 do
         pop_up.context[i]:removeSelf()
     end
+    isOpen = false
 end
 
 return pop_up
