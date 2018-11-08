@@ -23,7 +23,12 @@ local this =
         },
     context =
     {
-    }
+    },
+    onClickCloseButton = function()
+        if event.phase == "ended" then
+            pop_up.close()
+        end
+    end
 }
 
 pop_up.context = {}
@@ -304,6 +309,9 @@ function pop_up.addContext(context)
         return
     end
 end
+function pop_up.setCloseButtonFunction(onClickCloseButton)
+    this.onClickCloseButton = onClickCloseButton
+end
 
 function displayBox()
     print ("haha "..this.shapeType)
@@ -362,11 +370,6 @@ function displayContext()
     end
 end
 function displayCloseButton()
-    function onClickCloseButton(event)
-        if event.phase == "ended" then
-            pop_up.close()
-        end
-    end
 
     if this.enabled then
         local i = #pop_up.context + 1
@@ -380,7 +383,7 @@ function displayCloseButton()
             height = closeButton_width,
             defaultFile = "Icon.png",
             overFile = "Icon.png",
-            onEvent = onClickCloseButton
+            onEvent = this.onClickCloseButton
         }
 
         pop_up.context[i] = widget.newButton(button_info)
