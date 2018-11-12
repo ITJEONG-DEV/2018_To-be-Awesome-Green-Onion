@@ -151,9 +151,11 @@ end
 
 function inventory_closed()
   print "끝"
+  pop_up.close()
 end
 
 function initUI()
+    pop_up.setCloseButtonFunction(inventory_closed)
     --[[for i=1, 12, 1 do
         print (itemSet[i])
     end]]
