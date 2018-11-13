@@ -40,8 +40,10 @@ local sequences_character =
 
 function character_sprite.setSequenceName(name)
 
-    if pre_key or pre_key == name then
+    if not pre_key or pre_key == name then
     else
+        print("pre_key : ".. pre_key .. " name : " .. name )
+
         if name == "front" then
             character:setSequence("front")
         elseif name == "back" then
@@ -52,11 +54,13 @@ function character_sprite.setSequenceName(name)
             character:setSequence("beside")
         end
 
+        if (pre_key == "left" and name == "right") or (pre_key == "right" and name == "left") then
+            character:scale(-1, 1)
+        end
+
     end
 
-    if (pre_key == "left" and name == "right") or (pre_key == "right" and name == "left") then
-        character:scale(-1, 1)
-    end
+
 
     character:play()
 end
@@ -92,10 +96,10 @@ local function moveCharacter()
     character:setLinearVelocity( xForce * force_factor, yForce * force_factor )
 
     if xForce == 0 then
-        if yForce < 0 then
+        if yForce > 0 then
             character_sprite.setSequenceName("front")
             pre_key = "front"
-        elseif yForce > 0 then
+        elseif yForce < 0 then
             character_sprite.setSequenceName("back")
             pre_key = "back"
         end
@@ -111,6 +115,7 @@ end
 
 function character_sprite.makeSprite(stage_number)
     setPhysics()
+    pre_key = "front"
     if stage_number == 2 then
         makeWall()
     end
