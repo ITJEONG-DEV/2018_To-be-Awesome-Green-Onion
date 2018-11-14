@@ -35,7 +35,7 @@ local _W = display.contentWidth
 function ifMouseIsHover()
   local mx = 0
   local my = 0
-  local function onMouseEvent( event )
+  function onMouseEvent( event )
     -- Print the mouse cursor's current position to the log.
     local message = "Mouse Position = (" .. tostring(event.x) .. "," .. tostring(event.y) .. ")"
     mx = event.x
@@ -54,6 +54,10 @@ function ifMouseIsHover()
   -- Add the mouse event listener.
   Runtime:addEventListener( "mouse", onMouseEvent )
 
+end
+
+function stopMouse()
+  Runtime:removeEventListener( "mouse", onMouseEvent )
 end
 
 
@@ -116,9 +120,10 @@ function inventory.addItem(item)
     itemSet[item] = itemSet[item] + 1
 end
 
-function inventory.closed()
+function inventory_closed()
   print "끝"
   pop_up.close()
+  stopMouse()
 end
 
 return inventory

@@ -8,7 +8,7 @@ local bg
 local wall, floor = "_BACKGROUND_/2_1.png", "_BACKGROUND_/2_0.png"
 
 local function drawing(content, i, j)
-	drawingInfo[i][j] = display.newImage( floor, 440 + 40*(j-1), (content == 0 and 20 or 0) + 40*(i-1) )
+	drawingInfo[i][j] = display.newImage( floor, 440 + 40*(j-1), (content  == 0 and 20 or 0) + 40*(i-1) )
 
 	if content == 1 then
 		drawingWallInfo[i][j] = display.newImage( wall, 440 + 40*(j-1), 40*(i-1) )

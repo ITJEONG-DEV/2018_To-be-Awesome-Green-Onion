@@ -72,6 +72,9 @@ end
 
 function initUI()
 
+    ui.on()
+
+    --[[
     pop_up_set()
 
     sample_button = widget.newButton({
@@ -87,6 +90,7 @@ function initUI()
             end
         end
     })
+    ]]--
 end
 
 function layerCheck()
@@ -94,7 +98,7 @@ function layerCheck()
     readMaps.setLayer(x,y)
     darkness_coming.x, darkness_coming.y = x, y
     darkness_coming:toFront()
-    darkness_coming.alpha = 1
+    darkness_coming.alpha = 0
 end
 
 
@@ -123,15 +127,16 @@ function scene:show( event )
         physics.start()
         physics.setGravity(0,0)
         readMaps.readFile(1)
-        --physics.setDrawMode( "hybrid" )
+        physics.setDrawMode( "hybrid" )
 
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
-        -- initUI()
         character_sprite.makeSprite(2)
         darkness_coming = display.newImage("_CHARACTER_/darkness_coming.png")
 
         Runtime:addEventListener("enterFrame", layerCheck)
+        initUI()
+
     end
 end
 

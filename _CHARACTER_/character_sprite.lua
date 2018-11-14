@@ -9,32 +9,38 @@ local pre_key
 
 local sheetOptions_character =
 {
-    sheetContentWidth = 432,
-    sheetContentHeight = 192,
-    width = 48,
-    height = 48,
-    numFrames = 36
+    sheetContentWidth = 512,
+    sheetContentHeight = 256,
+    width = 64,
+    height = 64,
+    numFrames = 32
 }
 local sheet_character = graphics.newImageSheet( "/_CHARACTER_/sprite_sample.png", sheetOptions_character )
 local sequences_character =
 {
     {
         name = "front",
-        frames = { 28, 29, 30, 31 },
+        frames = { 11 },
         time = 400,
         loopCount = 0,
     },
     {
         name = "back",
-        frames = { 23, 24, 25, 24 },
+        frames = { 7 },
         time = 400,
         loopCount = 0,
     },
     {
-        name = "beside",
-        frames = { 6, 7, 10, 11 },
+        name = "right",
+        frames = { 13, 24 },
         time = 400,
         loopCount = 0,
+    },
+    {
+        name = "left",
+        frames = { 8, 6 },
+        time = 400,
+        loopCount = 0
     }
 }
 
@@ -49,13 +55,9 @@ function character_sprite.setSequenceName(name)
         elseif name == "back" then
             character:setSequence("back")
         elseif name == "left" then
-            character:setSequence("beside")
+            character:setSequence("left")
         elseif name == "right" then
-            character:setSequence("beside")
-        end
-
-        if (pre_key == "left" and name == "right") or (pre_key == "right" and name == "left") then
-            character:scale(-1, 1)
+            character:setSequence("right")
         end
 
     end
@@ -65,22 +67,40 @@ function character_sprite.setSequenceName(name)
     character:play()
 end
 
-local function makeWall()
+local function makeWall(stage_number)
     wall = {}
 
     -- top
     wall[#wall+1] = display.newRect( _MAX_WIDTH_ * 0.5, -10, _MAX_WIDTH_, 10 )
     physics.addBody( wall[#wall], "static", { bounce = 0 } )
+    wall[#wall]:setFillColor(_CONVERT_COLOR_("000000"))
 
-    -- left
-    wall[#wall+1] = display.newRect( 210, _MAX_HEIGHT_ * 0.5, 420, _MAX_HEIGHT_ )
-    physics.addBody( wall[#wall], "static", { bounce = 0 } )
+    if stage_number == 2 then
+        -- left
+        wall[#wall+1] = display.newRect( 210, _MAX_HEIGHT_ * 0.5, 420, _MAX_HEIGHT_ )
+        physics.addBody( wall[#wall], "static", { bounce = 0 } )
+        wall[#wall]:setFillColor(_CONVERT_COLOR_("000000"))
+
+        wall[#wall+1] = display.newRect( 1920 - 210, _MAX_HEIGHT_ * 0.5, 420, _MAX_HEIGHT_ )
+        physics.addBody( wall[#wall], "static", { bounce = 0 } )
+        wall[#wall]:setFillColor(_CONVERT_COLOR_("000000"))
+    else
+        -- left
+        wall[#wall+1] = display.newRect( -5, _MAX_HEIGHT_ * 0.5, 10, _MAX_HEIGHT_ )
+        physics.addBody( wall[#wall], "static", { bounce = 0 } )
+        wall[#wall]:setFillColor(_CONVERT_COLOR_("000000"))
+
+        wall[#wall+1] = display.newRect( 1920 + 5, _MAX_HEIGHT_ * 0.5, 10, _MAX_HEIGHT_ )
+        physics.addBody( wall[#wall], "static", { bounce = 0 } )
+        wall[#wall]:setFillColor(_CONVERT_COLOR_("000000"))
+
+    end
 
     -- bottom
     wall[#wall+1] = display.newRect( _MAX_WIDTH_ * 0.5, _MAX_HEIGHT_ + 10, _MAX_WIDTH_, 10 )
     physics.addBody( wall[#wall], "static", { bounce = 0 } )
-    wall[#wall+1] = display.newRect( 1920 - 210, _MAX_HEIGHT_ * 0.5, 420, _MAX_HEIGHT_ )
-    physics.addBody( wall[#wall], "static", { bounce = 0 } )
+    wall[#wall]:setFillColor(_CONVERT_COLOR_("000000"))
+
 end
 
 local function setPhysics()
@@ -118,9 +138,7 @@ end
 function character_sprite.makeSprite(stage_number)
     setPhysics()
     pre_key = "front"
-    if stage_number == 2 then
-        makeWall()
-    end
+    makeWall(stage_number)
     character = display.newSprite( sheet_character, sequences_character )
     physics.addBody( character, "dynamic", { density = 2.0, friction = 0, bounce = 0 } )
     character.x, character.y = _MAX_WIDTH_ * 0.5, _MAX_HEIGHT_ * 0.5
