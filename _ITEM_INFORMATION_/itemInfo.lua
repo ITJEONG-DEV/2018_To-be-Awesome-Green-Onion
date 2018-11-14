@@ -5,11 +5,16 @@ local font = require "_FONT_.font"
 local itemData = require "_ITEM_.item"
 
 local itemInfo = {}
-
+local info_isOpen = false
 local _W = display.contentWidth
 
-function inventory_closed()
+function itemInfo.isOpen()
+  return info_isOpen
+end
+
+function closed()
   print "끝"
+  info_isOpen = false
   pop_up.close()
 end
 
@@ -17,9 +22,9 @@ function printf()
   print "f"
 end
 
-function itemInfo.itemInfoInit(item)
-    pop_up.setCloseButtonFunction(inventory_closed)
-
+function itemInfo.pop_up(item)
+    pop_up.setCloseButtonFunction(closed)
+    info_isOpen = true
     pop_up.setShapeType("image")
     pop_up.setShapeSize(_MAX_WIDTH_*0.5, _MAX_HEIGHT_*0.5)
     pop_up.setShapePosition(_MAX_WIDTH_*0.5, _MAX_HEIGHT_*0.5)
@@ -35,12 +40,12 @@ function itemInfo.itemInfoInit(item)
 
     local defaultX = -220
     local defaultY = -250
-    
+
     pop_up.addContext(
     {
       contextType = "text",
-      x = 0--[[= defaultX*0.5]],
-      y = -10--[[= defaultY*0.5]],
+      x = 0,
+      y = -10,
       text = itemData.getItemText(item),
       textSize = 35,
       textColor = "FFFFFF",

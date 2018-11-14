@@ -94,7 +94,7 @@ function layerCheck()
     readMaps.setLayer(x,y)
     darkness_coming.x, darkness_coming.y = x, y
     darkness_coming:toFront()
-    darkness_coming.alpha = 0
+    darkness_coming.alpha = 1
 end
 
 

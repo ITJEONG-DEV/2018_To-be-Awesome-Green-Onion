@@ -2,12 +2,13 @@ local composer = require "composer"
 local pop_up = require "_POP_UP_.pop_up"
 local widget = require "widget"
 local font = require "_FONT_.font"
+local itemInfo = require "_ITEM_INFORMATION_.itemInfo"
 
 local inventory = {}
-
+local itemSortIndex = { 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 } --보유하고 있는 아이템의 번호를 차곡차곡 쌓습니다
 local _W = display.contentWidth
 
-getItemNum = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } --getItemNum[n] : item_N 의 개수
+
 
 --[[
 ***************item-list***************
@@ -42,9 +43,10 @@ function ifMouseIsHover()
     result = 0
     for i = 0,3,1 do
       for j = 0,2,1 do
-        if mx >= 815+110*j and my >= 365+110*i and mx <= 885+110*j and my <= 435+110*i and pop_up.IsOpen() ~= false then
+        if mx >= 815+110*j and my >= 365+110*i and mx <= 885+110*j and my <= 435+110*i and itemInfo.isOpen() == false then
           nm = tostring(i*3 + j + 1) .. "번 아이템 설명창"
           print(nm)
+          itemInfo.pop_up(1)
         end
       end
     end
@@ -55,7 +57,8 @@ function ifMouseIsHover()
 end
 
 
-function pop_up_set()
+function inventory.pop_up()
+    pop_up.setCloseButtonFunction(inventory_closed)
     ifMouseIsHover()
     pop_up.setShapeType("image")
     pop_up.setShapeSize(_MAX_WIDTH_*0.5, _MAX_HEIGHT_*0.5)
@@ -74,7 +77,7 @@ function pop_up_set()
     local defaultY = -250
 
     --inventory_Update()
-    local itemSortIndex = { 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 } --보유하고 있는 아이템의 번호를 차곡차곡 쌓습니다
+    local getItemNum = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } --getItemNum[n] : item_N 의 개수
     local cnt = 1
     for i = 1, 12, 1 do
         if getItemNum[i] == 1 then
@@ -85,24 +88,7 @@ function pop_up_set()
 
     for i=1, 4, 1 do
         for j = 1, 3, 1 do
-            if itemSortIndex[(i-1)*3+j] ~= 0 then--[[
-                pop_up.addContext(
-                {
-                    contextType = "button",
-                    x = defaultX + 110*j,
-                    y = defaultY + 110*i,
-                    width = 70,
-                    height = 70,
-                    defaultFile = "/_INVENTORY_/테스트용버튼.png",
-                    overFile = "/_INVENTORY_/테스트용버튼눌렸음.png",
-                    onEvent = function(e)
-                    if e.phase == "began" then
-                        print ((i - 1) * 3 + j)
-                    end
-                end
-                })
-            else
-            ]]
+            if itemSortIndex[(i-1)*3+j] ~= 0 then
                 pop_up.addContext(
                 {
                     contextType = "button",
@@ -123,59 +109,16 @@ function pop_up_set()
             end
         end
     end
-    --[[
-    pop_up.addContext(
-    {
-        contextType = "text",
-        x = 1 * _MAX_WIDTH_*0.1,
-        y =  _MAX_HEIGHT_ * 0,
-        text = "my new context",
-        textSize = 35,
-        textColor = "66ff00",
-        font = font.regular,
-    })
-    ]]
+    pop_up.open()
 end
 
-function addItem(item)
+function inventory.addItem(item)
     itemSet[item] = itemSet[item] + 1
 end
 
-function pop_up_inventory()
-    pop_up_set()
-end
-
-function inventory_Update()
-
-end
-
-function inventory_closed()
+function inventory.closed()
   print "끝"
   pop_up.close()
-end
-
-function initUI()
-    pop_up.setCloseButtonFunction(inventory_closed)
-    --[[for i=1, 12, 1 do
-        print (itemSet[i])
-    end]]
-    pop_up_set()
-
-    sample_button = widget.newButton({
-        x = _MAX_WIDTH_ * 0.5,
-        y = _MAX_HEIGHT_ * 0.5,
-        width = 200,
-        height = 200,
-        defaultFile = "Icon.png",
-        overFile = "Icon.png",
-        onEvent = function(e)
-            if e.phase == "ended" then
-                pop_up.open()
-            end
-        end
-    })
-
-
 end
 
 return inventory
