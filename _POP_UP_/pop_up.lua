@@ -385,7 +385,6 @@ function displayCloseButton()
         pop_up.context[i] = widget.newButton(button_info)
     end
 end
-
 function pop_up.open()
     displayBox()
     displayTitle()
