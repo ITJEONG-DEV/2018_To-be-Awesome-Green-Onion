@@ -94,11 +94,12 @@ function initUI()
 end
 
 function layerCheck()
+    character_sprite.toFront()
     x, y = character_sprite.getPos()
     readMaps.setLayer(x,y)
-    darkness_coming.x, darkness_coming.y = x, y
+    darkness_coming.x, darkness_coming.y = x, y-7.5
     darkness_coming:toFront()
-    darkness_coming.alpha = 0
+    --darkness_coming.alpha = 0
 end
 
 
@@ -127,12 +128,15 @@ function scene:show( event )
         physics.start()
         physics.setGravity(0,0)
         readMaps.readFile(1)
-        physics.setDrawMode( "hybrid" )
+        --physics.setDrawMode( "hybrid" )
 
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
-        character_sprite.makeSprite(2)
+        character_sprite.makeSprite(2) -- parameter = stage_number
+        character_sprite.setPos(1380, 880)
         darkness_coming = display.newImage("_CHARACTER_/darkness_coming.png")
+
+        layerCheck()
 
         Runtime:addEventListener("enterFrame", layerCheck)
         initUI()

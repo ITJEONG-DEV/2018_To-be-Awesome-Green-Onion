@@ -3,7 +3,8 @@ local keyboardModule = require "_CHARACTER_.keyboardModule"
 
 local character_sprite = {}
 
-local character, wall
+local character, wall, shadow
+local stageNum = 0
 
 local pre_key
 
@@ -67,7 +68,7 @@ function character_sprite.setSequenceName(name)
     character:play()
 end
 
-local function makeWall(stage_number)
+local function makeWall()
     wall = {}
 
     -- top
@@ -75,7 +76,7 @@ local function makeWall(stage_number)
     physics.addBody( wall[#wall], "static", { bounce = 0 } )
     wall[#wall]:setFillColor(_CONVERT_COLOR_("000000"))
 
-    if stage_number == 2 then
+    if stageNum == 2 then
         -- left
         wall[#wall+1] = display.newRect( 210, _MAX_HEIGHT_ * 0.5, 420, _MAX_HEIGHT_ )
         physics.addBody( wall[#wall], "static", { bounce = 0 } )
@@ -113,9 +114,17 @@ local force_factor = 20
 
 local function moveCharacter()
     local xForce, yForce = keyboardModule.getXY()
-    character:setLinearVelocity( xForce * force_factor, yForce * force_factor )
+
+    if stageNum == 2 then
+        shadow:setLinearVelocity( xForce * force_factor, yForce * force_factor )
+        character.x, character.y = shadow.x, shadow.y-7.5
+    else
+        character:setLinearVelocity( xForce * force_factor, yForce * force_factor )
+        shadow.x, shadow.y = character.x, character.y+7.5
+    end
 
     character.rotation = 0
+    shadow.rotation = 0
 
     if xForce == 0 then
         if yForce > 0 then
@@ -136,11 +145,21 @@ local function moveCharacter()
 end
 
 function character_sprite.makeSprite(stage_number)
+    stageNum = stage_number
+
     setPhysics()
     pre_key = "front"
-    makeWall(stage_number)
+    makeWall()
+    shadow = display.newImage( "_CHARACTER_/shadow.png")
+    shadow.alpha = 0.5
     character = display.newSprite( sheet_character, sequences_character )
-    physics.addBody( character, "dynamic", { density = 2.0, friction = 0, bounce = 0 } )
+    if stageNum == 2 then
+        local physicsData = (require "_CHARACTER_.shadow").physicsData(1.0)
+        physics.addBody( shadow, "dynamic", physicsData:get("shadow") )
+    else
+        local physicsData = (require "_CHARACTER_.onion").physicsData(1.0)
+        physics.addBody( character, "dynamic", physicsData:get("onion") )
+    end
     character.x, character.y = _MAX_WIDTH_ * 0.5, _MAX_HEIGHT_ * 0.5
     character:play()
 
@@ -157,7 +176,30 @@ function character_sprite.stopSprite()
 end
 
 function character_sprite.getPos()
-    return character.x, character.y
+    if stageNum == 2 then
+        return shadow.x, shadow.y
+    else
+        return character.x, character.y
+    end
 end
 
+function character_sprite.setPos(x,y)
+    if x < 0 or x > 1920 then
+        print "Error : Invalid x Position"
+        return
+    end
+
+    if y < 0 or y > 1080 then
+        print "Error : Invalid y Position"
+        return
+    end
+
+    character.x, character.y = x, y
+    shadow.x, shadow.y = x, y
+end
+
+function character_sprite.toFront()
+    shadow:toFront()
+    character:toFront()
+end
 return character_sprite

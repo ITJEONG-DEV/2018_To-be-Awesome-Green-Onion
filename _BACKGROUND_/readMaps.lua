@@ -15,6 +15,13 @@ local function drawing(content, i, j)
 		local physicsData = (require ("_BACKGROUND_.2_"..content) ).physicsData(1)
 
 		physics.addBody( drawingInfo[i][j], "static",  physicsData:get(("obj")))
+	elseif content == 2 then -- box
+	elseif content == 3 then -- bug
+	elseif content == 4 then -- broccoli
+	elseif content == 5 then -- carrot
+	elseif content == 6 then -- bird
+	elseif content == 7 then -- mouse
+	elseif content == 8 then -- portal
 	end
 end
 
