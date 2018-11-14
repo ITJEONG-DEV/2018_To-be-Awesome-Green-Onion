@@ -2,6 +2,7 @@ local pop_up = {}
 local font = require "_FONT_.font"
 local widget = require "widget"
 
+local isOpen = false
 local this =
 {
     shapeType = "rect",
@@ -22,7 +23,12 @@ local this =
         },
     context =
     {
-    }
+    },
+    onClickCloseButton = function()
+        if event.phase == "ended" then
+            pop_up.close()
+        end
+    end
 }
 
 pop_up.context = {}
@@ -303,6 +309,9 @@ function pop_up.addContext(context)
         return
     end
 end
+function pop_up.setCloseButtonFunction(onClickCloseButton)
+    this.onClickCloseButton = onClickCloseButton
+end
 
 function displayBox()
     print ("haha "..this.shapeType)
@@ -361,11 +370,6 @@ function displayContext()
     end
 end
 function displayCloseButton()
-    function onClickCloseButton(event)
-        if event.phase == "ended" then
-            pop_up.close()
-        end
-    end
 
     if this.enabled then
         local i = #pop_up.context + 1
@@ -379,17 +383,21 @@ function displayCloseButton()
             height = closeButton_width,
             defaultFile = "Icon.png",
             overFile = "Icon.png",
-            onEvent = onClickCloseButton
+            onEvent = this.onClickCloseButton
         }
 
         pop_up.context[i] = widget.newButton(button_info)
     end
+end
+function pop_up.IsOpen()
+  return isOpen
 end
 function pop_up.open()
     displayBox()
     displayTitle()
     displayContext()
     displayCloseButton()
+    isOpen = true
 end
 
 function pop_up.close()
@@ -397,6 +405,7 @@ function pop_up.close()
     for i = 1, #pop_up.context, 1 do
         pop_up.context[i]:removeSelf()
     end
+    isOpen = false
 end
 
 return pop_up

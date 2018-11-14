@@ -31,11 +31,36 @@ getItemNum = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } --getItemNum[n] : item_N 의
 -- -----------------------------------------------------------------------------------
 
 
+function ifMouseIsHover()
+  local mx = 0
+  local my = 0
+  local function onMouseEvent( event )
+    -- Print the mouse cursor's current position to the log.
+    local message = "Mouse Position = (" .. tostring(event.x) .. "," .. tostring(event.y) .. ")"
+    mx = event.x
+    my = event.y
+    result = 0
+    for i = 0,3,1 do
+      for j = 0,2,1 do
+        if mx >= 815+110*j and my >= 365+110*i and mx <= 885+110*j and my <= 435+110*i and pop_up.IsOpen() ~= false then
+          nm = tostring(i*3 + j + 1) .. "번 아이템 설명창"
+          print(nm)
+        end
+      end
+    end
+  end
+  -- Add the mouse event listener.
+  Runtime:addEventListener( "mouse", onMouseEvent )
+
+end
+
+
 function pop_up_set()
+    ifMouseIsHover()
     pop_up.setShapeType("image")
     pop_up.setShapeSize(_MAX_WIDTH_*0.5, _MAX_HEIGHT_*0.5)
     pop_up.setShapePosition(_MAX_WIDTH_*0.5, _MAX_HEIGHT_*0.5)
-    pop_up.setImageLink("/_INVENTORY_/INVENTORY_BG.png")
+    pop_up.setImageLink("/_INVENTORY_/INVENTORY_배경_2.png")
     pop_up.setShapeAlpha(1)
     pop_up.setTitle(
     {
@@ -44,14 +69,23 @@ function pop_up_set()
         textSize = 50,
         textColor = "FFFFFF"
     })
+
     local defaultX = -220
     local defaultY = -250
 
-    inventory_Update()
+    --inventory_Update()
+    local itemSortIndex = { 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 } --보유하고 있는 아이템의 번호를 차곡차곡 쌓습니다
+    local cnt = 1
+    for i = 1, 12, 1 do
+        if getItemNum[i] == 1 then
+            itemSortIndex[cnt] = i
+            cnt = cnt + 1
+        end
+    end
 
     for i=1, 4, 1 do
         for j = 1, 3, 1 do
-            if itemSortIndex[(i-1)*3+j] == 0 then
+            if itemSortIndex[(i-1)*3+j] ~= 0 then--[[
                 pop_up.addContext(
                 {
                     contextType = "button",
@@ -68,6 +102,7 @@ function pop_up_set()
                 end
                 })
             else
+            ]]
                 pop_up.addContext(
                 {
                     contextType = "button",
@@ -75,8 +110,10 @@ function pop_up_set()
                     y = defaultY + 110*i,
                     width = 70,
                     height = 70,
-                    defaultFile = "/_INVENTORY_/item".. (i-1)*3+j ..".png",
-                    overFile = "/_INVENTORY_/item".. (i-1)*3+j .."_clicked.png",
+                    --defaultFile = "/_INVENTORY_/item".. (i-1)*3+j ..".png",
+                    --overFile = "/_INVENTORY_/item".. (i-1)*3+j .."_clicked.png",
+                    defaultFile = "/_INVENTORY_/테스트용버튼.png",
+                    overFile = "/_INVENTORY_/테스트용버튼눌렸음.png",
                     onEvent = function(e)
                     if e.phase == "began" then
                         print ((i - 1) * 3 + j)
@@ -109,17 +146,16 @@ function pop_up_inventory()
 end
 
 function inventory_Update()
-    local itemSortIndex = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } --보유하고 있는 아이템의 번호를 차곡차곡 쌓습니다
-    local cnt = 1
-    for i = 1, 12, 1 do
-        if getItemNum[i] == 1 then
-            itemSortIndex[cnt] = i
-            cnt = cnt + 1
-        end
-    end
+
+end
+
+function inventory_closed()
+  print "끝"
+  pop_up.close()
 end
 
 function initUI()
+    pop_up.setCloseButtonFunction(inventory_closed)
     --[[for i=1, 12, 1 do
         print (itemSet[i])
     end]]
