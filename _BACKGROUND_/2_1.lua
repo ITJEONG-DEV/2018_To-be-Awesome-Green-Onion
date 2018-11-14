@@ -18,23 +18,23 @@ local M = {}
 
 function M.physicsData(scale)
 	local physics = { data =
-	{ 
-		
-		["2_1"] = {
-                    
-                    
-                    
-                    
+	{
+
+		["obj"] = {
+
+
+
+
                     {
-                    pe_fixture_id = "", density = 2, friction = 0, bounce = 0, 
+                    pe_fixture_id = "", density = 2, friction = 0, bounce = 0,
                     filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
                     shape = {   20, 0  ,  20, 40  ,  -20, 40  ,  -20, 0  }
                     }
-                    
-                    
-                    
+
+
+
 		}
-		
+
 	} }
 
         -- apply scale factor
@@ -50,7 +50,7 @@ function M.physicsData(scale)
                     end
                 end
         end
-	
+
 	function physics:get(name)
 		return unpack(self.data[name])
 	end
@@ -58,9 +58,8 @@ function M.physicsData(scale)
 	function physics:getFixtureId(name, index)
                 return self.data[name][index].pe_fixture_id
 	end
-	
+
 	return physics;
 end
 
 return M
-

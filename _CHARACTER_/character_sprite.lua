@@ -95,6 +95,8 @@ local function moveCharacter()
     local xForce, yForce = keyboardModule.getXY()
     character:setLinearVelocity( xForce * force_factor, yForce * force_factor )
 
+    character.rotation = 0
+
     if xForce == 0 then
         if yForce > 0 then
             character_sprite.setSequenceName("front")
@@ -134,6 +136,10 @@ end
 
 function character_sprite.stopSprite()
     character:stop()
+end
+
+function character_sprite.getPos()
+    return character.x, character.y
 end
 
 return character_sprite

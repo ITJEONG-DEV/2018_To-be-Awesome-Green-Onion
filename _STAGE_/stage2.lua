@@ -4,10 +4,13 @@ local physcis = require "physics"
 local pop_up = require "_POP_UP_.pop_up"
 local font = require "_FONT_.font"
 local character_sprite = require "_CHARACTER_.character_sprite"
+local ui = require "_UI_.uiModule"
+local readMaps = require "_BACKGROUND_.readMaps"
 
 local scene = composer.newScene()
 
 local _W = display.contentWidth
+local darkness_coming
 
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
@@ -86,6 +89,14 @@ function initUI()
     })
 end
 
+function layerCheck()
+    x, y = character_sprite.getPos()
+    readMaps.setLayer(x,y)
+    darkness_coming.x, darkness_coming.y = x, y
+    darkness_coming:toFront()
+    darkness_coming.alpha = 0
+end
+
 
 
 -- -----------------------------------------------------------------------------------
@@ -110,12 +121,17 @@ function scene:show( event )
     if ( phase == "will" ) then
         -- Code here runs when the sce  ne is still off screen (but is about to come on screen)
         physics.start()
-        -- physics.setDrawMode( "hybrid" )
+        physics.setGravity(0,0)
+        readMaps.readFile(1)
+        --physics.setDrawMode( "hybrid" )
 
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
         -- initUI()
         character_sprite.makeSprite(2)
+        darkness_coming = display.newImage("_CHARACTER_/darkness_coming.png")
+
+        Runtime:addEventListener("enterFrame", layerCheck)
     end
 end
 

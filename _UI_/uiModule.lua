@@ -33,7 +33,7 @@ function createBar()
 	local bar = display.newImageRect("bar.png", 360, 8)
 	bar.x = 220
 	bar.y = 114
-	
+
 end
 
 function activeRect()
@@ -53,19 +53,19 @@ function addListener()
 	    	--셋팅은 클릭 이미지 없나용?222
  	        --pop up setting dialog
  	   end
-    return true 
-    
+    return true
+
 	end
 
 	function storeTouchListener(event)
 		if ( event.phase == "began" ) then
 			display.newImageRect("인벤토리 아이콘_클릭.png", 115,115)
-	    elseif ( event.phase == "ended" ) then;
+	    elseif ( event.phase == "ended" ) then
  	        display.newImageRect("인벤토리 아이콘.png", 115,115)
  	        --pop up inventory dialog
  	   end
-    return true 
-    
+    return true
+
 	end
 
 	setBtn:addEventListener( "touch", setTouchListener )
