@@ -99,7 +99,7 @@ function uiModule.toFront()
 	setBtn:toFront()
 	storeBtn:toFront()
 	for i = 1, 3, 1 do
-		life[i]:toFront()
+		if life[i] then life[i]:toFront() end
 	end
 	bar:toFront()
 	active:toFront()

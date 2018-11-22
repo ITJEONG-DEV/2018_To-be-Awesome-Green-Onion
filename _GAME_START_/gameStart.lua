@@ -1,6 +1,7 @@
 local composer = require( "composer" )
 local font = require ("_FONT_.font")
 local widget = require "widget"
+local music = require "_MUSIC_.music"
 
 local scene = composer.newScene()
 
@@ -22,6 +23,7 @@ local function onClickButton(e)
         bg:removeSelf()
         bg2:removeSelf()
         bg3:removeSelf()
+        music.stop()
         composer.gotoScene( "_STAGE3_.stage3" )
     end
 end
@@ -35,6 +37,9 @@ function scene:create( event )
 
     local sceneGroup = self.view
     -- Code here runs when the scene is first created but has not yet appeared on screen
+    music.setAudio(0)
+    music.loadStream()
+
     bg = display.newRect( 0, 0, _MAX_WIDTH_, _MAX_HEIGHT_ )
     bg.x, bg.y = _MAX_WIDTH_ * 0.5, _MAX_HEIGHT_ * 0.5
     bg:toFront()
@@ -73,6 +78,7 @@ function scene:show( event )
 
     if ( phase == "will" ) then
         -- Code here runs when the sce  ne is still off screen (but is about to come on screen)
+        music.play()
 
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen

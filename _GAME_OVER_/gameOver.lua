@@ -1,5 +1,6 @@
 local composer = require( "composer" )
 local font = require ("_FONT_.font")
+local music = require "_MUSIC_.music"
 
 local scene = composer.newScene()
 
@@ -23,6 +24,9 @@ function scene:create( event )
     bg:toFront()
     bg:setFillColor(_CONVERT_COLOR_("222222"))
 
+    music.setAudio(6)
+    music.loadStream()
+
     local bg2 = display.newImage("_GAME_OVER_/tmp.png")
     bg2:toFront()
 
@@ -42,6 +46,7 @@ function scene:show( event )
 
     if ( phase == "will" ) then
         -- Code here runs when the sce  ne is still off screen (but is about to come on screen)
+        music.play()
 
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
@@ -71,6 +76,7 @@ function scene:destroy( event )
 
     local sceneGroup = self.view
     -- Code here runs prior to the removal of scene's view
+    music.stop()
 
 end
 

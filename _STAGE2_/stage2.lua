@@ -6,6 +6,7 @@ local font = require "_FONT_.font"
 local character_sprite = require "_CHARACTER_.character_sprite"
 local ui = require "_UI_.uiModule"
 local readMaps = require "_BACKGROUND_.readMaps"
+local music = require "_MUSIC_.music"
 
 local scene = composer.newScene()
 
@@ -115,7 +116,8 @@ function scene:create( event )
 
     local sceneGroup = self.view
     -- Code here runs when the scene is first created but has not yet appeared on screen
-
+    music.setAudio(2)
+    music.loadStream()
 end
 
 
@@ -131,6 +133,7 @@ function scene:show( event )
         physics.setGravity(0,0)
         readMaps.readFile(1)
         --physics.setDrawMode( "hybrid" )
+        music.play()
 
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
@@ -142,6 +145,7 @@ function scene:show( event )
         Runtime:addEventListener("enterFrame", layerCheck)
         initUI()
         layerCheck()
+        ui.setLife(6)
 
     end
 end
@@ -168,6 +172,7 @@ function scene:destroy( event )
 
     local sceneGroup = self.view
     -- Code here runs prior to the removal of scene's view
+    music.stop()
 
 end
 

@@ -8,6 +8,7 @@ local ui = require "_UI_.uiModule"
 local chicken_sprite = require "_CHARACTER_.chicken_sprite"
 local sheep_sprite = require "_CHARACTER_.sheep_sprite"
 local cow_sprite = require "_CHARACTER_.cow_sprite"
+local music = require "_MUSIC_.music"
 
 local scene = composer.newScene()
 
@@ -111,7 +112,8 @@ local function newScene()
             hi.delete()
         end
     end
-
+    
+    music.stop()
     composer.gotoScene( "_GAME_OVER_.gameOver" )
     print("hihoho")
 end
@@ -141,6 +143,8 @@ function scene:create( event )
     local sceneGroup = self.view
     -- Code here runs when the scene is first created but has not yet appeared on screen
 
+    music.setAudio(3)
+    music.loadStream()
 end
 
 
@@ -154,7 +158,9 @@ function scene:show( event )
         -- Code here runs when the sce  ne is still off screen (but is about to come on screen)
         physics.start()
         physics.setGravity(0,0)
-        physics.setDrawMode( "hybrid" )
+        -- physics.setDrawMode( "hybrid" )
+
+        music.play()
 
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
