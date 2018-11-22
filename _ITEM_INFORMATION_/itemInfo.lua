@@ -8,20 +8,62 @@ local itemInfo = {}
 local info_isOpen = false
 local _W = display.contentWidth
 
+function ifMouseIsHovered(x, y)
+  local mx = 0
+  local my = 0
+  function onMouse( event )
+    -- Print the mouse cursor's current position to the log.
+    local message = "Mouse Position = (" .. tostring(event.x) .. "," .. tostring(event.y) .. ")"
+    mx = event.x
+    my = event.y
+    result = 0
+    print(message)
+    if mx < x or my < y or mx > x + 70 or my > y + 70 then
+      itemInfo.pop_down()
+    end
+  end
+  -- Add the mouse event listener.
+  Runtime:addEventListener( "mouse", onMouse )
+end
+
 function itemInfo.isOpen()
   return info_isOpen
 end
 
-function closed()
-  print "끝"
+function itemInfo.pop_down()
   info_isOpen = false
-  pop_up.close()
+  bg:removeSelf()
+  title:removeSelf()
+  itemText:removeSelf()
+  itemEffect:removeSelf()
+  Runtime:removeEventListener( "mouse", onMouse )
 end
 
-function printf()
-  print "f"
-end
+function itemInfo.pop_up(item, x, y)
+  info_isOpen = true
+  ifMouseIsHovered(x,y)
+  print(x)
+  print(y)
 
+  bg = display.newImageRect( "/_ITEM_INFORMATION_/아이템 설명창.png", 550 , 370 )
+  bg.x = x + 295 --960
+  bg.y = y + 205 --540
+  bg:toFront()
+
+  title = display.newText( itemData.getItemName(item), x + 295, y + 90--[[430]], font.bold , 60)
+  title:setFillColor( 1, 1, 1 )
+  title:toFront()
+
+  itemText = display.newText( itemData.getItemText(item), x + 295, y + 190--[[530]], font.regular, 35)
+  itemText:setFillColor( 1, 1, 1 )
+  itemText:toFront()
+
+  itemEffect = display.newText( itemData.getItemEffect(item), x + 295,y + 290 --[[630]], font.regular, 35 )
+  itemEffect:setFillColor( _CONVERT_COLOR_( itemData.getTextColor(item)) )
+  itemEffect:toFront()
+
+end
+--[[
 function itemInfo.pop_up(item)
     pop_up.setCloseButtonFunction(closed)
     info_isOpen = true
@@ -65,5 +107,5 @@ function itemInfo.pop_up(item)
 
     pop_up.open()
 end
-
+]]
 return itemInfo

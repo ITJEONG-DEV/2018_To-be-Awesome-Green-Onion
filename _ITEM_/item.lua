@@ -33,7 +33,7 @@ local itemData = {}
 
 function itemData.getItemName(item)
   if item == 1 then return "비료"
-  elseif item == 2 then return "비터민"
+  elseif item == 2 then return "비타민"
   elseif item == 3 then return "영양제"
   elseif item == 4 then return "간식"
   elseif item == 5 then return "동료의 응원"
@@ -116,6 +116,21 @@ function itemData.getTextColor(item)
     --print "아이템의 분류 색깔을 불러올 수 없습니다 / [" .. item .. "번아이템]"
     return ""
   end
+end
+
+function itemData.getImage(item)
+  if item == 1 then
+    return "/_ITEM_/쿼터-비료.png"
+  elseif item == 2 then
+    return "/_ITEM_/쿼터-비타민.png"
+  elseif item == 3 then
+    return "/_ITEM_/쿼터-영양제.png"
+  elseif item == 4 then
+    return "/_ITEM_/쿼터-간식.png"
+  else
+     return "Icon.png"
+  end
+
 end
 
 return itemData
