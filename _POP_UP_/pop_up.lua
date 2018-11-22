@@ -312,7 +312,15 @@ end
 function pop_up.setCloseButtonFunction(onClickCloseButton)
     this.onClickCloseButton = onClickCloseButton
 end
+function pop_up.removeContext()
+  -- 1 : box
+  -- 2 : title
+  -- index + 2
+  for i = 3, this.enabled and #this.context - 1 or #this.context, 1 do
+    this.context[i+2] = nil
+  end
 
+end
 function displayBox()
     print ("haha "..this.shapeType)
     if this.shapeType == "rect" then

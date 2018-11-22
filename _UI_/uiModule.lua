@@ -9,10 +9,12 @@ function createBtn()
 	setBtn = display.newImageRect("/_UI_/아이콘_환경설정.png", 120, 120)
 	setBtn.x = 1840
 	setBtn.y = 80
+	setBtn:toFront()
 
 	storeBtn = display.newImageRect("/_UI_/인벤토리 아이콘.png", 115,115)
 	storeBtn.x = 1840
 	storeBtn.y = 1003
+	storeBtn:toFront()
 	function storeBtnTouch(event)
 		if ( event.phase == "began" ) then
 			print( "Touch" )
@@ -32,6 +34,7 @@ function createLife()
 		life[i] = display.newImageRect("/_UI_/아이콘_LIFE.png", 60, 54)
 		life[i].x = 80 + (i-1)*70
 		life[i].y = 67
+		life[i]:toFront()
 	end
 end
 
@@ -40,7 +43,7 @@ function createBar()
 	bar = display.newImageRect("/_UI_/bar.png", 360, 8)
 	bar.x = 220
 	bar.y = 114
-
+	bar:toFront()
 end
 
 function activeRect()

@@ -94,7 +94,7 @@ function layerCheck()
     readMaps.setLayer(x,y)
     darkness_coming.x, darkness_coming.y = x, y
     darkness_coming:toFront()
-    darkness_coming.alpha = 1
+    darkness_coming.alpha = 0
 end
 
 
@@ -128,9 +128,12 @@ function scene:show( event )
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
         -- initUI()
-        character_sprite.makeSprite(2)
-        darkness_coming = display.newImage("_CHARACTER_/darkness_coming.png")
 
+        character_sprite.makeSprite(2)
+        --char = display.newImageRect("_CHARACTER_/오른쪽-걷는-양파1.png", 960, 540, 70, 70)
+        --char:toFront()
+        darkness_coming = display.newImage("_CHARACTER_/darkness_coming.png")
+        ui.on()
         Runtime:addEventListener("enterFrame", layerCheck)
     end
 end
