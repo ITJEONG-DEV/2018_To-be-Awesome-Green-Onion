@@ -156,9 +156,11 @@ function character_sprite.makeSprite(stage_number)
     if stageNum == 2 then
         local physicsData = (require "_CHARACTER_.shadow").physicsData(1.0)
         physics.addBody( shadow, "dynamic", physicsData:get("shadow") )
+        shadow.name = "character"
     else
         local physicsData = (require "_CHARACTER_.onion").physicsData(1.0)
         physics.addBody( character, "dynamic", physicsData:get("onion") )
+        character.name = "character"
     end
     character.x, character.y = _MAX_WIDTH_ * 0.5, _MAX_HEIGHT_ * 0.5
     character:play()
