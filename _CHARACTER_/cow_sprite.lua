@@ -46,6 +46,12 @@ function cow_sprite.makeSprite()
         cow:setSequence(name)
     end
 
+    function cow:delete()
+        physics.stop()
+        physics.removeBody( cow )
+        cow:removeSelf()
+    end
+
     return cow
 end
 

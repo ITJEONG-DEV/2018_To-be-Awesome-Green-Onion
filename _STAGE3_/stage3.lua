@@ -14,6 +14,7 @@ local scene = composer.newScene()
 local _W = display.contentWidth
 local i = 0
 local image, shadow = {}, {}
+local life = 6
 
 function force(n, r)
   if i > 60 * n then i = 0
@@ -37,17 +38,26 @@ function circle(x, y, j)
 
   -- image[j]:setAngularVelopcity(50)
 
-  local move = function( event )
+  local hi = image[j]
+
+  function hi:enterFrame( event )
     image[j].n = image[j].n + 1
     if image[j].n > 8 then image[j].n = image[j].n - 8 end
 
     image[j]:setSequence( tostring(image[j].n) )
     image[j]:addPos(force(1500,5))
-    end
+  end
 
-  Runtime:addEventListener( "enterFrame", move )
+  Runtime:addEventListener( "enterFrame", hi )
+
+  function hi:delete()
+      Runtime:removeEventListener("enterFrame", hi )
+      image[j]:remove()
+      rec:delete()
+  end
 
 end
+
 
 function initUI(x,y)
   bg = display.newImageRect("/_STAGE3_/스테이지3_바닥.png", 1920, 1080)
@@ -85,11 +95,37 @@ function initUI(x,y)
   ui.on()
 end
 
+local function newScene()
+    physics.stop()
+    Runtime:removeEventListener("collision", onGlobalCollision)
+    character_sprite:delete()
+    ui.off()
+    if ultari2 then ultari2:removeSelf() end
+    if ultari1 then ultari1:removeSelf() end
+    if cow then cow:delete() end
+    if bg then bg:removeSelf() end
+
+    for i = 1, 6, 1 do
+        if image[i] then
+            local hi = image[i]
+            hi.delete()
+        end
+    end
+
+    composer.gotoScene( "_GAME_OVER_.gameOver" )
+    print("hihoho")
+end
+
 function onGlobalCollision( e )
     if e.phase == "began" then
         if e.object1.name == "character" and e.object2.name == "enemy" or e.object1.name == "enemy" and e.object2.name == "character" then
             -- collision with enemy
             print "collision with enemy!"
+            life = life - 1
+            if life == 0 then
+                newScene()
+            else ui.setLife(life)
+            end
         end
     end
 
@@ -118,12 +154,13 @@ function scene:show( event )
         -- Code here runs when the sce  ne is still off screen (but is about to come on screen)
         physics.start()
         physics.setGravity(0,0)
-        -- physics.setDrawMode( "hybrid" )
+        physics.setDrawMode( "hybrid" )
 
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
         -- initUI()
         initUI(960,540)
+        ui.setLife(6)
         character_sprite.makeSprite(3)
         character_sprite.setPos( 100, _MAX_HEIGHT_ * 0.5)
 

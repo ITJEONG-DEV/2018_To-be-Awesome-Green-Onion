@@ -204,4 +204,13 @@ function character_sprite.toFront()
     shadow:toFront()
     character:toFront()
 end
+
+function character_sprite:delete()
+    physics.stop()
+    Runtime:removeEventListener( "enterFrame", moveCharacter )
+    keyboardModule.endEvent()
+    physics.removeBody( character )
+    character:removeSelf()
+    print("remove character")
+end
 return character_sprite

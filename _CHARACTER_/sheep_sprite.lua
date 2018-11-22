@@ -31,6 +31,12 @@ function sheep_sprite.makeSprite()
 
     sheep:play()
 
+    function sheep:delete()
+        physics.stop()
+        physics.removeBody(sheep)
+        sheep:removeSelf()
+    end
+
     return sheep
 end
 

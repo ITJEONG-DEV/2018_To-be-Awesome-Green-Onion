@@ -51,6 +51,12 @@ function chicken_sprite.makeSprite()
         chicken:setSequence(n)
     end
 
+    function chicken:remove()
+        physics.stop()
+        physics.removeBody( chicken )
+        if chicken then chicken:removeSelf() end
+    end
+
     chicken:setPos(_MAX_WIDTH_*0.5, _MAX_HEIGHT_*0.5)
 
     return chicken

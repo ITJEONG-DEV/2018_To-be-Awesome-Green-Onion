@@ -99,6 +99,8 @@ function layerCheck()
     readMaps.setLayer(x,y)
     darkness_coming.x, darkness_coming.y = x, y-7.5
     darkness_coming:toFront()
+    ui:toFront()
+
     -- darkness_coming.alpha = 0
 end
 
@@ -136,10 +138,10 @@ function scene:show( event )
         character_sprite.setPos(1380, 880)
         darkness_coming = display.newImage("_CHARACTER_/darkness_coming.png")
 
-        layerCheck()
 
         Runtime:addEventListener("enterFrame", layerCheck)
         initUI()
+        layerCheck()
 
     end
 end

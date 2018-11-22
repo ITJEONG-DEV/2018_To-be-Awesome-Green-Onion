@@ -13,6 +13,27 @@ settings =
 		supported = { "portrait" },
 	},
 
+	win32 =
+	{
+		preferenceStorage = "registry",
+		singleInstance = false,
+	},
+
+	window =
+	{
+		defaultMode = "normal",
+		defaultViewWidth = 1920,
+		defaultViewHeight = 1080,
+		enableCloseButton = true,
+		enableMinimizeButton = true,
+		enableMaximizeButton = true,
+		suspendWhenMinimized = true,
+		titleText =
+		{
+			default = "To be Awesome Green Onion! - Kraken.Q"
+		}
+	},
+
 	--
 	-- Plugins section
 	--
