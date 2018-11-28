@@ -24,7 +24,7 @@ local function onClickButton(e)
         bg2:removeSelf()
         bg3:removeSelf()
         music.stop()
-        composer.gotoScene( "_STAGE3_.stage3" )
+        composer.gotoScene( "_STAGE2_.stage2" )
     end
 end
 

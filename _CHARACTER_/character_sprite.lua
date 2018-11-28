@@ -49,7 +49,7 @@ function character_sprite.setSequenceName(name)
 
     if not pre_key or pre_key == name then
     else
-        print("pre_key : ".. pre_key .. " name : " .. name )
+        --print("pre_key : ".. pre_key .. " name : " .. name )
 
         if name == "front" then
             character:setSequence("front")
@@ -75,32 +75,38 @@ local function makeWall()
     wall[#wall+1] = display.newRect( _MAX_WIDTH_ * 0.5, -10, _MAX_WIDTH_, 10 )
     physics.addBody( wall[#wall], "static", { bounce = 0 } )
     wall[#wall]:setFillColor(_CONVERT_COLOR_("000000"))
+    wall[#wall].alpha = 0
 
     if stageNum == 2 then
         -- left
         wall[#wall+1] = display.newRect( 210, _MAX_HEIGHT_ * 0.5, 420, _MAX_HEIGHT_ )
         physics.addBody( wall[#wall], "static", { bounce = 0 } )
         wall[#wall]:setFillColor(_CONVERT_COLOR_("000000"))
+        wall[#wall].alpha = 0
 
         wall[#wall+1] = display.newRect( 1920 - 210, _MAX_HEIGHT_ * 0.5, 420, _MAX_HEIGHT_ )
         physics.addBody( wall[#wall], "static", { bounce = 0 } )
         wall[#wall]:setFillColor(_CONVERT_COLOR_("000000"))
+        wall[#wall].alpha = 0
     else
         -- left
         wall[#wall+1] = display.newRect( -5, _MAX_HEIGHT_ * 0.5, 10, _MAX_HEIGHT_ )
         physics.addBody( wall[#wall], "static", { bounce = 0 } )
         wall[#wall]:setFillColor(_CONVERT_COLOR_("000000"))
+        wall[#wall].alpha = 0
 
         wall[#wall+1] = display.newRect( 1920 + 5, _MAX_HEIGHT_ * 0.5, 10, _MAX_HEIGHT_ )
         physics.addBody( wall[#wall], "static", { bounce = 0 } )
         wall[#wall]:setFillColor(_CONVERT_COLOR_("000000"))
-
+        wall[#wall].alpha = 0
     end
+
 
     -- bottom
     wall[#wall+1] = display.newRect( _MAX_WIDTH_ * 0.5, _MAX_HEIGHT_ + 10, _MAX_WIDTH_, 10 )
     physics.addBody( wall[#wall], "static", { bounce = 0 } )
     wall[#wall]:setFillColor(_CONVERT_COLOR_("000000"))
+    wall[#wall].alpha = 0
 
 end
 
@@ -211,6 +217,12 @@ function character_sprite:delete()
     keyboardModule.endEvent()
     physics.removeBody( character )
     character:removeSelf()
+    if wall then
+        for i = 1, #wall, 1 do
+            physics.removeBody( wall[i] )
+            wall[i]:removeSelf()
+        end
+    end
     print("remove character")
 end
 return character_sprite

@@ -42,8 +42,6 @@ function readMaps.readFile(stageNum)
 
 	local content = 0
 
-	bg = display.newImage("_BACKGROUND_/2_outside.png")
-
 	for i = 1, 27, 1 do
 		drawingInfo[i] = {}
 		drawingWallInfo[i] = {}
@@ -67,6 +65,18 @@ function readMaps.setLayer(x, y)
 				if drawingWallInfo[i][j] then
 					drawingWallInfo[i][j]:toFront()
 				end
+			end
+		end
+	end
+end
+
+function readMaps.delete()
+	for i = 1, 27, 1 do
+		for j = 1, 27, 1 do
+			if drawingInfo[i][j] then drawingInfo[i][j]:removeSelf() end
+			if drawingWallInfo[i][j] then
+				physics.removeBody( drawingWallInfo[i][j] )
+				drawingWallInfo[i][j]:removeSelf()
 			end
 		end
 	end

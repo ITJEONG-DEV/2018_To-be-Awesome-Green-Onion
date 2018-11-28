@@ -107,12 +107,19 @@ end
 
 function escape()----------------------------------------------------del object
   local x,y = character_sprite.getPos()
-  if x < 430 and y > 1050 then
-    print"escape"
+  if x < 556 and y > 1050 then
+    -- print"escape"
+    ui.off()
+    Runtime:removeEventListener("enterFrame", layerCheck)
+    Runtime:removeEventListener("enterFrame", escape)
+    darkness_coming:removeSelf()
+    character_sprite:delete()
+    music.stop()
+    readMaps.delete()
     composer.gotoScene( "_STAGE3_.stage3" )
   else
     t = "x: " .. x .. "y: " .. y
-    --print(t)
+    -- print(t)
   end
 
 end
@@ -155,7 +162,6 @@ function scene:show( event )
         Runtime:addEventListener("enterFrame", layerCheck)
         Runtime:addEventListener("enterFrame", escape)
         initUI()
-        layerCheck()
         ui.setLife(6)
 
     end

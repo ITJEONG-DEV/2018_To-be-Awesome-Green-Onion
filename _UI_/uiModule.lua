@@ -106,7 +106,7 @@ function uiModule.toFront()
 end
 
 function uiModule.setLife(num) -- num: 0 ~ 6
-	print("life " .. num)
+	-- print("life " .. num)
 	if num <= 0 or num > 6 then
 		print "오류: 범위에 맞지 않는 숫자입니다[생명력]"
 	end
