@@ -105,7 +105,17 @@ function layerCheck()
     -- darkness_coming.alpha = 0
 end
 
+function escape()----------------------------------------------------del object
+  local x,y = character_sprite.getPos()
+  if x < 430 and y > 1050 then
+    print"escape"
+    composer.gotoScene( "_STAGE3_.stage3" )
+  else
+    t = "x: " .. x .. "y: " .. y
+    --print(t)
+  end
 
+end
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -143,6 +153,7 @@ function scene:show( event )
 
 
         Runtime:addEventListener("enterFrame", layerCheck)
+        Runtime:addEventListener("enterFrame", escape)
         initUI()
         layerCheck()
         ui.setLife(6)

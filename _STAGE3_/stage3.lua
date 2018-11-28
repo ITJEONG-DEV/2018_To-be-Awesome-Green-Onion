@@ -99,6 +99,7 @@ end
 local function newScene()
     physics.stop()
     Runtime:removeEventListener("collision", onGlobalCollision)
+    Runtime:removeEventListener("enterFrame", cowMoving)
     character_sprite:delete()
     ui.off()
     if ultari2 then ultari2:removeSelf() end
@@ -112,7 +113,7 @@ local function newScene()
             hi.delete()
         end
     end
-    
+
     music.stop()
     composer.gotoScene( "_GAME_OVER_.gameOver" )
     print("hihoho")
@@ -130,6 +131,11 @@ function onGlobalCollision( e )
             end
         end
     end
+
+end
+
+function cowMoving()
+  cow.x = (cow.x + 5)%1920
 
 end
 
@@ -171,6 +177,7 @@ function scene:show( event )
         character_sprite.setPos( 100, _MAX_HEIGHT_ * 0.5)
 
         Runtime:addEventListener("collision", onGlobalCollision)
+        Runtime:addEventListener("enterFrame", cowMoving)
     end
 end
 

@@ -81,7 +81,7 @@ function uiModule.on()
 	life = {}
 	-- createLife()
 	createBar()
-	activeRect()
+	--activeRect()
 	--addListener()
 end
 
@@ -102,7 +102,7 @@ function uiModule.toFront()
 		if life[i] then life[i]:toFront() end
 	end
 	bar:toFront()
-	active:toFront()
+	--active:toFront()
 end
 
 function uiModule.setLife(num) -- num: 0 ~ 6
